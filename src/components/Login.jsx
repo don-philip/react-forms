@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Input from "./Input";
 
 export default function Login() {
   const [enteredValues, setEnteredValues]=useState({
@@ -11,6 +12,7 @@ export default function Login() {
   })
   
   const emailIsInvalid =didEdit.email && !enteredValues.email.includes('@')
+  const passwordIsInvalid= didEdit.password && enteredValues.password.trim().length<6
 function handleSubmit(event){
   event.preventDefault()
   console.log(enteredValues);
@@ -40,18 +42,26 @@ function handleInputBlur(identifier){
       <h2>Login</h2>
 
       <div className="control-row">
-        <div className="control no-margin">
-          <label htmlFor="email">Email</label>
-          <input onChange={(event)=>handleInnputChange('email',event.target.value)} value={enteredValues.email} id="email" type="email" name="email" onBlur={()=>handleInputBlur("email")}/>
-          <div className="control-error">
-            {emailIsInvalid && <p>Please enter a valid email address</p>}
-          </div>
-        </div>
-
-        <div className="control no-margin">
-          <label htmlFor="password">Password</label>
-          <input onChange={(event)=>handleInnputChange('password',event.target.value)} value={enteredValues.password} id="password" type="password" name="password" />
-        </div>
+        <Input 
+          label="Email" 
+          id="email" 
+          type="email" 
+          name="email" 
+          onChange={(event)=>handleInnputChange('email',event.target.value)} 
+          value={enteredValues.email}
+          onBlur={()=>handleInputBlur("password")}
+          error={emailIsInvalid && 'Enter valid email'}
+        />
+        <Input 
+          label="Password" 
+          id="password" 
+          type="password" 
+          name="password" 
+          onChange={(event)=>handleInnputChange('password',event.target.value)} 
+          value={enteredValues.password}
+          onBlur={()=>handleInputBlur("email")}
+          error={passwordIsInvalid && 'Enter a valid password'}
+        />
       </div>
 
       <p className="form-actions">
